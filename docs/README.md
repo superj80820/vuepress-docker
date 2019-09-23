@@ -43,6 +43,6 @@ actionLink: /articles/
   flex: 1; /* 2x larger than default size to fit container width */
 }
 .box-2 {
-  flex: 5; /* 0.5 smaller than default size to fit container width */
+  flex: 4; /* 0.5 smaller than default size to fit container width */
 }
 </style>
