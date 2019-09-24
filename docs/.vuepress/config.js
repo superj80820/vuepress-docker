@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 module.exports = {
     title: '髒桶子',
     description: '有趣的東西 真香',
@@ -7,25 +9,27 @@ module.exports = {
     themeConfig: {
         nav: [
             { text: 'Home', link: '/' },
-            { text: '文章列表', link: '/articles/' },
+            { text: '設計教學', link: '/designs/' },
+            { text: '學習筆記', link: '/notes/' },
             { text: '實驗室', link: '/labs/' },
             { text: '關於我', link: 'https://www.cakeresume.com/superj80820' },
             { text: 'Github', link: 'https://github.com/superj80820' },
         ],
         sidebar: [
             {
-                title: '文章列表',
+                title: '設計教學',
                 collapsable: false,
-                children: [
-                    '/articles/',
-                ]
+                children: getAllChildren('/designs/')
+            },
+            {
+                title: '學習筆記',
+                collapsable: false,
+                children: getAllChildren('/notes/')
             },
             {
                 title: '實驗室',
                 collapsable: false,
-                children: [
-                    '/labs/',
-                ]
+                children: getAllChildren('/labs/')
             }
         ]
     },
@@ -34,5 +38,13 @@ module.exports = {
     ],
     define: {
         config: process.env
-    }
+    },
+}
+
+function getAllChildren(path) {
+    return [path]
+        .concat(
+            fs.readdirSync(`./docs${path}`)
+                .filter(item => item !== 'README.md')
+                .map(item => `${path}${item}`))
 }
