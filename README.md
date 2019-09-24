@@ -35,6 +35,10 @@
 
 ## 環境變數
 
+請複製 **.env.example** 成 **.env** 檔案
+
+並依照以下資訊編輯
+
 ```
 //.env.example
 # Github info
