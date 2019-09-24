@@ -85,3 +85,11 @@ docker-compose run web npm run docs:build
 ```
 ./deploy.sh
 ```
+
+## 測試
+
+在tests資料夾新增你要的python測試檔 然後運行以下即可
+
+```
+docker-compose run web npm run tests:python
+```
