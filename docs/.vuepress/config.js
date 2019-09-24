@@ -28,5 +28,11 @@ module.exports = {
                 ]
             }
         ]
+    },
+    globalUIComponents: [
+        'fbChat'
+    ],
+    define: {
+        config: process.env
     }
 }

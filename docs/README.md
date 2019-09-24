@@ -18,7 +18,7 @@ actionLink: /articles/
     </div>
 </div>
 
-### 鴨發Go!
+### 髒沙發
 
 <div class="box-container container size flex">
     <div class="box-1 box-size">

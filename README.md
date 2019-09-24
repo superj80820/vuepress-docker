@@ -5,6 +5,11 @@
 * docker
 * docker-compose
 
+## 目前有的Components
+
+* Disqus: 可使用FB, Google, Twitter登入留言的留言板
+* fbChat: 讓瀏覽部落格的人可以直接透過FB與你的粉專交談
+
 ## 資料夾結構
 
 ```
@@ -28,10 +33,25 @@
 └── README.md
 ```
 
+## 環境變數
+
+```
+//.env.example
+# Github info
+GITHUB_USERNAME= //請輸入你的Github帳號名稱
+
+# FB customer chat
+PAGE_ID= //請輸入FB customer chat的page id
+
+# Disqus
+DISQUA_USERNAME= //請輸入Disqus的使用者名稱
+```
+
 ## 初始化
 
 ```
-docker-compose build
+docker-compose build &&\
+docker-compose run web npm install
 ```
 
 ## 開始寫作!
