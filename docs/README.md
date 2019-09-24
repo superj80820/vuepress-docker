@@ -11,10 +11,13 @@ actionLink: /articles/
 
 <div class="box-container container size flex">
     <div class="box-1 box-size">
+      <a href="https://github.com/superj80820/Ahfargo_bus_bot">
         <img src="https://i.imgur.com/8w0oQCO.png" width="100px;">
+      </a>
     </div>
     <div class="box-2 box-size">
-        瓜姑瓜呱呱呱呱～
+      公車line bot:<br />
+      Line 軟體結合市政公車系統 以提供公車查詢功能 不需要另外安裝 App 即可查詢公車 獲得良好回應
     </div>
 </div>
 
@@ -22,10 +25,13 @@ actionLink: /articles/
 
 <div class="box-container container size flex">
     <div class="box-1 box-size">
+      <a href="https://github.com/superj80820/star_line_bot">
         <img src="https://i.imgur.com/psLzkOR.png" width="100px;">
+      </a>
     </div>
     <div class="box-2 box-size">
-        髒髒髒髒髒
+        人臉辨識line bot:<br />
+        獲得Line today, 電腦王阿達, 新聞雲ETtoday,  知名Youtube報導 約8萬人使用 持續成長中
     </div>
 </div>
 
