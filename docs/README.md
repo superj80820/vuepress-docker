@@ -2,7 +2,7 @@
 home: true
 heroImage: /me.png
 actionText: 看看我的文章 →
-actionLink: /articles/
+actionLink: /designs/
 ---
 
 ## 作品
