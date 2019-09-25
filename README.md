@@ -46,7 +46,7 @@ Hi 這是我自己的部落格 採用vuepress製作
 並依照以下資訊編輯
 
 ```
-//.env.example
+//.env
 # Github info
 GITHUB_USERNAME= //請輸入你的Github帳號名稱
 
