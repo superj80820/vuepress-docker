@@ -2,7 +2,7 @@
 title: 顯示live2d
 ---
 
-[demo](https://superj80820.github.io/another/demoMikuBus/#/Bus)
+[demo](https://superj80820.github.io/projects/demoMikuBus/#/Bus)
 
 可以在網頁上顯示live2d 然後就有初音惹~ 目前正在想怎麼RWD在頁面右下角
 

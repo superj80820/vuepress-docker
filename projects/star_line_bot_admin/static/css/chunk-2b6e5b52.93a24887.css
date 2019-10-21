@@ -1,0 +1,1 @@
+.img-item{width:300px}.content{display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.portfolio-items{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));overflow:auto}.item{width:100%;padding:1rem}

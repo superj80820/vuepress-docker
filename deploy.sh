@@ -7,8 +7,8 @@ export $(cut -d= -f1 .env)
 # If have error, then print.
 set -e
 
-# another folder migrate
-cp -r ./another ./docs/.vuepress/dist
+# projects folder migrate
+cp -r ./projects ./docs/.vuepress/dist
 
 # deploy
 cd docs/.vuepress/dist
@@ -16,5 +16,4 @@ git init
 git add -A
 git commit -m 'deploy'
 git push -f git@github.com:${GITHUB_USERNAME}/${GITHUB_USERNAME}.github.io.git master
-
 cd -
