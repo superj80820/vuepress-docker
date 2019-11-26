@@ -1,52 +1,222 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIFF Starter</title>
-    <script src="https://unpkg.com/vue"></script>
+    <title>發票大獅兄</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@4.x/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <script src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
 </head>
+
 <body>
-    <div id="app">
-        <p>{{ message }}</p>
+    <div id="app" style="display:none">
+        <v-app>
+            <v-container>
+                <v-layout wrap>
+                    <div class="text-center mb-4">
+                        <v-overlay :opacity="0.5" z-index="1" :value="alert">
+                            <v-alert color="green" dark transition="scale-transition">
+                                {{ alertResult }}
+                            </v-alert>
+                        </v-overlay>
+                    </div>
+                    <v-card class="mx-auto" outlined>
+                        <v-radio-group style="padding-left: 15px" v-model="radios" row>
+                            <v-radio :disabled="disabledQRMode" label="自動掃描(限IOS)" value="QRMode"></v-radio>
+                            <v-radio label="手動輸入" value="manual"></v-radio>
+                        </v-radio-group>
+                        <v-list-item>
+                            <v-list-item-content v-show="radios === 'manual'">
+                                <v-text-field outlined v-model="manualInput" label="請輸入末三碼"></v-text-field>
+                            </v-list-item-content>
+                            <v-list-item-content v-show="radios === 'QRMode'">
+                                <v-btn @click='onDecode'>點我掃瞄發票「左側QR-Code」</v-btn>
+                            </v-list-item-content>
+                        </v-list-item>
+                        <v-card-title class="headline">特別獎 {{ winningNum.special.join(" ") }}</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯8位數號碼與特別獎號碼相同者獎金1,000萬元</v-card-subtitle>
+                        <v-card-title class="headline">特獎 {{ winningNum.grand.join(" ") }}</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯8位數號碼與特獎號碼相同者獎金200萬元</v-card-subtitle>
+                        <v-card-title class="headline">頭獎 {{ winningNum.first.join(" ") }}</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯8位數號碼與頭獎號碼相同者獎金20萬元</v-card-subtitle>
+                        <v-card-title class="headline">二獎</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯末7 位數號碼與頭獎中獎號碼末7
+                            位相同者各得獎金4萬元</v-card-subtitle>
+                        <v-card-title class="headline">三獎</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯末6 位數號碼與頭獎中獎號碼末6
+                            位相同者各得獎金1萬元</v-card-subtitle>
+                        <v-card-title class="headline">四獎</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯末5 位數號碼與頭獎中獎號碼末5
+                            位相同者各得獎金4千元</v-card-subtitle>
+                        <v-card-title class="headline">五獎 </v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯末4 位數號碼與頭獎中獎號碼末4
+                            位相同者各得獎金1千元</v-card-subtitle>
+                        <v-card-title class="headline">六獎</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯末3 位數號碼與 頭獎中獎號碼末3
+                            位相同者各得獎金2百元</v-card-subtitle>
+                        <v-card-title class="headline">增開六獎 {{ winningNum.additional.join(" ") }}</v-card-title>
+                        <v-card-subtitle>同期統一發票收執聯末3位數號碼與增開六獎號碼相同者各得獎金2百元</v-card-subtitle>
+                    </v-card>
+                </v-layout>
+            </v-container>
+        </v-app>
     </div>
 
-<script>
-new Vue({
-    el: '#app',
-    data: {
-        message: 'Hello Vue.js!'
-    },
-    methods: {
-        initializeLiff(liffId) {
-            return liff
-            .init({
-                liffId: liffId
-            })
-            .then((data) => {
-                console.log('asdf')
-                return Promise.resolve(data)
-            })
-            .catch((err) => {
-                console.log(err.code, err.message);
-                return Promise.reject(err)
-            });
-        }
-    },
-    mounted() {
-        this.initializeLiff('1554134565-PDWQVX3j')
-        .then(() => {
-            return liff.scanCode()
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.js"></script>
+
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: {
+                alertResult: '',
+                disabledQRMode: false,
+                result: "",
+                error: "",
+                winningNum: {
+                    "special": ["41482012"],
+                    "grand": ["58837976"],
+                    "first": ["20379435", "47430762", "36193504"],
+                    "additional": ["693", "043", "425"]
+                },
+                alert: false,
+                radios: "QRMode",
+                manualInput: "",
+                sounds: {
+                    notGet: "notGet.mp3",
+                    getMomey: 'coin.mp3'
+                }
+            },
+            watch: {
+                result() {
+                    if (this.result !== "") {
+                        if (this.result.includes('悲劇')) {
+                            this.showAlert(this.result, 'notGet')
+                        }
+                        else {
+                            this.showAlert(this.result, 'getMomey')
+                        }
+                        this.result = '' //reset result
+                    }
+                },
+                radios() {
+                },
+                manualInput() {
+                    if(this.manualInput.length > 3) return
+                    this.checkWinning("manual", this.manualInput);
+                }
+            },
+            mounted() {
+                window.document.getElementById("app").style["display"] = "inline"
+                this.initializeLiff('1653576209-0kMBQAG2')
+                    .then(() => {
+                        const phoneOS = window.liff.getOS()
+                        if (phoneOS === 'android') {
+                            this.showAlert('目前line官方在android上還不支援掃QR發票喔!', 'getMomey', 3000)
+                            this.radios = "manual"
+                            this.disabledQRMode = true
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err)
+                    })
+            },
+            methods: {
+                showAlert(result, audioItem = 'getMomey', appearTime = 1500) {
+                    this.alert = true;
+                    const audio = new Audio(this.sounds[audioItem]);
+                    audio.play();
+                    this.alertResult = result
+                    setTimeout(() => {
+                        this.alertResult = ""
+                        this.alert = false;
+                    }, appearTime);
+                },
+                initializeLiff(liffId) {
+                    return window.liff
+                        .init({
+                            liffId: liffId
+                        })
+                        .then((data) => {
+                            console.log(data)
+                            return Promise.resolve(data)
+                        })
+                        .catch((err) => {
+                            console.log(err.code, err.message);
+                            return Promise.reject(err)
+                        });
+                },
+                onDecode(result) {
+                    window.liff.scanCode()
+                    .then(result => {
+                        this.checkWinning("QRMode", this.getNum(result.value));
+                    }) 
+                    // this.checkWinning("QRMode", this.getNum('WL45698321'));
+                },
+                checkNumFormat(result) {
+                    return result.match(/^[A-Za-z]+(\d{8})/) !== null;
+                },
+                getNum(result) {
+                    return result.match(/^[A-Za-z]+(\d{8})/)[1];
+                },
+                checkWinning: (function () {
+                    function checkIncloude(self, winning, number, pattern) {
+                        return self.winningNum[winning]
+                            .map(item => item.match(pattern)[0])
+                            .includes(number.match(pattern)[0]);
+                    }
+                    return function (mode, number) {
+                        if (mode === "QRMode") {
+                            if (checkIncloude(this, "special", number, /\d{8}$/)) {
+                                this.result = `${number} 中特別獎`;
+                            } else if (checkIncloude(this, "grand", number, /\d{8}$/)) {
+                                this.result = `${number} 中特獎`;
+                            } else if (checkIncloude(this, "first", number, /\d{3}$/)) {
+                                this.result = `${number} 中六獎`;
+                                if (checkIncloude(this, "first", number, /\d{4}$/)) {
+                                    this.result = `${number} 中五獎`;
+                                    if (checkIncloude(this, "first", number, /\d{5}$/)) {
+                                        this.result = `${number} 中四獎`;
+                                        if (checkIncloude(this, "first", number, /\d{6}$/)) {
+                                            this.result = `${number} 中三獎`;
+                                            if (checkIncloude(this, "first", number, /\d{7}$/)) {
+                                                this.result = `${number} 中二獎`;
+                                                if (checkIncloude(this, "first", number, /\d{8}$/)) {
+                                                    this.result = `${number} 中頭獎`;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            } else if (checkIncloude(this, "additional", number, /\d{3}$/)) {
+                                this.result = `${number} 中增開六獎`;
+                            } else {
+                                this.result = `${number} 悲劇 什麼都沒中`;
+                            }
+                        } else if (mode === "manual") {
+                            if (number.length < 3) return false;
+                            if (checkIncloude(this, "special", number, /\d{3}$/)) {
+                                this.result = "注意特別獎";
+                            } else if (checkIncloude(this, "grand", number, /\d{3}$/)) {
+                                this.result = "注意特獎";
+                            } else if (checkIncloude(this, "first", number, /\d{3}$/)) {
+                                this.result = "中兩百注意頭獎";
+                            } else {
+                                this.result = "悲劇 什麼都沒中";
+                            }
+                            window.setTimeout(()=>{
+                                this.manualInput = ''
+                            }, 1000)
+                        }
+                    };
+                })()
+            }
         })
-        .then(result => {
-            this.message = result
-        })
-        .catch(err => {
-            this.message = err
-        })
-    },
-})
-</script>
+    </script>
 
 </body>
+
 </html>
