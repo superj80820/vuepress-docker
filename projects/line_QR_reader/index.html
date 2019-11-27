@@ -149,17 +149,37 @@
                             return Promise.reject(err)
                         });
                 },
-                onDecode(result) {
+                onDecode() {
                     window.liff.scanCode()
                     .then(result => {
-                        this.checkWinning("QRMode", this.getNum(result.value));
+                        const number = this.getNum(result.value)
+                        if (number === null) {
+                            this.showAlert(`掃到以下資訊 ${result.value} 應該是掃錯了 請掃描左側QR-Code喔`, 'notGet', 2500)
+                        }
+                        this.checkWinning("QRMode", number);
                     }) 
-                    // this.checkWinning("QRMode", this.getNum('WL45698321'));
+                    // function getRandom(x){
+                    //     return Math.floor(Math.random()*x);
+                    // };
+                    // const list = [
+                    //     "FA0550466510708260308000000000000003c0000000080339047x9h1L1zb/iONtpjMq6sjEw==:**********:3:3:1:奇多家常起司口味玉米棒25元:1:25:",
+                    //     "FA1550466810708262308000000000000003c0000000080339047x9h1L1zb/iONtpjMq6sjEw==:**********:3:3:1:奇多家常起司口味玉米棒25元:1:25:",
+                    //     "**瑞穗鮮乳290ml(盒):1:35:紅牛點數:1:0",
+                    //     "**瑞穗鮮乳290ml(盒):1:35:紅牛點數:1:w"
+                    // ]
+                    // const result = list[getRandom(4)]
+                    // const number = this.getNum(result)
+                    // if (number === null) {
+                    //     this.showAlert(`掃到以下資訊 ${result} 應該是掃錯了 請掃描左側QR-Code喔`, 'notGet', 2500)
+                    // }
+                    // this.checkWinning("QRMode", number);
                 },
                 checkNumFormat(result) {
                     return result.match(/^[A-Za-z]+(\d{8})/) !== null;
                 },
                 getNum(result) {
+                    const ret = result.match(/^[A-Za-z]+(\d{8})/)
+                    if (ret === null) return ret
                     return result.match(/^[A-Za-z]+(\d{8})/)[1];
                 },
                 checkWinning: (function () {
